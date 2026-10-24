@@ -101,12 +101,16 @@ INIT:
     ; update player UI
     mov player_flag, #PLAYER_FLAG_DRAW_HP + PLAYER_FLAG_DRAW_PLAYER
 
-    ; set inventory
-    for_x @inv, #INV_SIZE-1
-        TXA
-        STA player_inv, X
-        INC player_inv, X
-    to_x_dec @inv, #-1
+    ; set starting inventory
+    mov item_page_offset, #$00
+    mov player_inv+0, #ITEM_BANDAGE
+    mov player_inv+1, #ITEM_MONSTER_CANDY
+    mov player_inv+2, #ITEM_MONSTER_CANDY
+    mov player_inv+3, #ITEM_MONSTER_CANDY
+    mov player_inv+4, #ITEM_MONSTER_CANDY
+    mov player_inv+5, #ITEM_SPIDER_DONUT
+    mov player_inv+6, #ITEM_CINNAMON_PIE
+    mov player_inv+7, #$00
 
     ; Init FamiStudio
     LDX #7

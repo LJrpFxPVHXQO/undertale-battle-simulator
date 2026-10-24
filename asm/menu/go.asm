@@ -31,10 +31,16 @@
 
 menu_go_item_choice:
     ; get item id
+    TXA
+    CLC
+    ADC item_page_offset
+    TAX
     LDA player_inv, X
     PHA
     ; remove item from inventory
     JSR remove_item
+    ; return to the first page after the inventory changes
+    mov item_page_offset, #$00
     ; reset item variable
     STA item_var
     ; find_item(id)
@@ -62,10 +68,15 @@ menu_go_item:
     STA mmc5_banks+1
     STA MMC5_PRG_BNK0
 
-    ; for item in inv size
-    for_x @loop, #INV_SIZE-1
+    ; for each entry on the current page
+    for_x @loop, #ITEM_PAGE_SIZE-1
+        ; item index = page offset + menu index
+        TXA
+        CLC
+        ADC item_page_offset
+        TAY
         ; if item == 0
-        LDA player_inv, X
+        LDA player_inv, Y
             ; continue
             BEQ @continue
         ; Y = item.idx
@@ -113,12 +124,25 @@ menu_go_item:
     ; if no item
     LDA menu_size
     BNE :+
-        ; cancel menu & return
         JMP menu_ret
-    ; else
     :
-        ; draw_menu & return
-        JMP draw_menu
+
+    JSR draw_menu
+    mov menu_list_pos_x+ITEM_PAGE_SIZE, #2*8+4
+    mov menu_list_pos_y+ITEM_PAGE_SIZE, #21*8+4
+    LDA item_page_offset
+    BEQ @first_page_label
+    sta_ptr tmp, menu_data_item_page_2
+    JMP @copy_page_label
+    @first_page_label:
+    sta_ptr tmp, menu_data_item_page_1
+    @copy_page_label:
+    for_y @copy_page, #$00
+        LDA (tmp), Y
+        STA menu_list_str+ITEM_PAGE_SIZE*ITEM_NAME_SIZE, Y
+    to_y_inc @copy_page, #ITEM_NAME_SIZE
+    LDX #ITEM_PAGE_SIZE
+    JMP draw_menu_str
 
 
 menu_go_act_monster_choice:
@@ -293,15 +317,15 @@ menu_data_pos_x:
     .byte 15*8+4
     .byte 2*8+4
     .byte 15*8+4
-    .byte 2*8+4
-    .byte 15*8+4
 menu_data_pos_y:
     .byte 17*8+4
     .byte 17*8+4
     .byte 19*8+4
     .byte 19*8+4
-    .byte 21*8+4
-    .byte 21*8+4
+menu_data_item_page_1:
+    .byte FONT_CHR_BNK, "* SEL PAGE 1/2", $00
+menu_data_item_page_2:
+    .byte FONT_CHR_BNK, "* SEL PAGE 2/2", $00
 
 menu_data_pos_y_ver:
     .byte 17*8+4
