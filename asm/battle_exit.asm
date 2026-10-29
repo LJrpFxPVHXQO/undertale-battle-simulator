@@ -5,6 +5,20 @@
 ; The NES cannot alpha blend an individual monster.  Fade the battle palette
 ; through a dim pass to black, then rebuild the encounter-selection screen.
 ;
+; Win (spare or kill): Froggit -> Ember -> back to the landing page.
+begin_battle_victory:
+    LDA battle_exit_state
+    BNE begin_battle_exit
+    LDA fight_id
+    CMP #$02
+    BNE :+
+        mov fight_id, #$03
+        JMP begin_battle_exit
+    :
+    LDA #$00
+    STA landing_done
+    JMP begin_battle_exit
+
 begin_battle_exit:
     LDA battle_exit_state
     BNE @end

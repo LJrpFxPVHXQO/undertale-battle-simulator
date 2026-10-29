@@ -48,6 +48,12 @@ menu_go_item_choice:
 
 
 menu_go_flee:
+    ; fleeing returns to the landing page
+    LDA battle_exit_state
+    BNE :+
+    LDA #$00
+    STA landing_done
+:
     JMP begin_battle_exit
 
 
@@ -236,9 +242,41 @@ menu_go_mercy:
         CPX #$02
         BNE @spare
 
-    ; draw the menu
-    JMP draw_menu
+    ; draw the menu, then the first N letters of "Spare" in yellow (N = listens, flag bits 1-3)
+    JSR draw_menu
+    LDA monster_flags+0
+    AND #MONSTER_FLAG_SPARE
+    BNE @partial_end
+    LDA monster_flags+0
+    LSR
+    AND #$07
+    BEQ @partial_end
+    TAX
+    LDA #FONT_CHR_BNK+1
+    STA menu_list_str+$50
+    LDY #$00
+    @letters:
+        LDA menu_spare_word, Y
+        STA menu_list_str+$51, Y
+        INY
+        DEX
+        BNE @letters
+    LDA #$00
+    STA menu_list_str+$51, Y
+    LDA menu_list_pos_x+0
+    CLC
+    ADC #16
+    STA menu_list_pos_x+5
+    LDA menu_list_pos_y+0
+    STA menu_list_pos_y+5
+    LDX #$05
+    JMP draw_menu_str
+    @partial_end:
+    RTS
 
+
+menu_spare_word:
+    .byte "Spare"
 
 menu_go_act:
     sta_ptr tmp, menu_go_act_monster

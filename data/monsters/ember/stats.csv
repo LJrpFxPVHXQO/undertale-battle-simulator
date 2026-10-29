@@ -1,7 +1,7 @@
 id,3
 name,"Ember   "
-maxhp,180
-hp,180
+maxhp,20
+hp,20
 atk,12
 def,4
 xp,80

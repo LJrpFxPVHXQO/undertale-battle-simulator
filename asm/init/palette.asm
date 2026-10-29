@@ -28,9 +28,9 @@ init_pal:
     .byte $30, $0F, $30 ; first white palette
     .byte $0F, $30, $30 ; second white palette
     .byte $16, $28, $30 ; UI + text palette
-    .byte $17, $00, $00 ; orange
+    .byte $17, $2A, $00 ; orange (button) + green HP bar over orange
     ; sprite
     .byte $30, $00, $16 ; sprite palette 0
     .byte $16, $00, $0F ; sprite palette 1
-    .byte $00, $00, $00 ; sprite palette 2
+    .byte $2A, $16, $0F ; sprite palette 2 (monster HP bar)
     .byte $00, $00, $00 ; sprite palette 3

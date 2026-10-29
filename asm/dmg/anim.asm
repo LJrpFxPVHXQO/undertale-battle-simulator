@@ -50,12 +50,18 @@ dmg_anim:
         LDA #$00
         STA monster_stats + MonsterStat::hp, X
         STA monster_stats + MonsterStat::hp + 1, X
-        JMP begin_battle_exit
+        JSR kill_reward
+        JMP begin_battle_victory
 
 
     @init:
-        ; display strick anim
-        ; TODO
+        ; display strick anim (also played on a miss)
+        mov cur_monster_fight_pos, selected_monster
+        LDA #<ANIM_DATA_MONSTERS_STRIKE_STRIKE_1
+        STA tmp+0
+        LDA #>ANIM_DATA_MONSTERS_STRIKE_STRIKE_1
+        STA tmp+1
+        JSR add_anim
         ; dmg -> BCD
         mov tmp+0, fight_damage
         mov tmp+1, #0
@@ -73,6 +79,7 @@ dmg_anim:
     @number_anim:
         ; set CHR bank 0 to dmg sprites
         mov MMC5_CHR_BNK0, #DMG_SPRITE_BNK
+        JSR dmg_hpbar_update
         ; xy pos
         JSR monster_fightid_to_pos
         TXA

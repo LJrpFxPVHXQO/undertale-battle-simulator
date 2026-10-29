@@ -2,7 +2,7 @@ import argparse
 import glob
 import os
 from PIL import Image
-from bw_utils import img2tiles, name2const, spritest2chr, get_imgs_from_csv
+from bw_utils import img2tiles, arr2tiles, name2const, spritest2chr, get_imgs_from_csv
 from rle_inc import rleinc_encode, rleinc_decode
 import numpy as np
 
@@ -62,6 +62,8 @@ parser.add_argument("-d", "--datafile", default="test.bin")
 parser.add_argument("-cf", "--constfile", default="const.asm")
 parser.add_argument("-b", "--bnk", default=0)
 parser.add_argument("-bs", "--bnk_size_from", default="")
+parser.add_argument("-cc", "--colorchrfile", default="", help="CHR file for sprite_color images")
+parser.add_argument("-cb", "--colorbnk", type=int, default=0, help="first 1KB CHR bank of the sprite_color CHR file")
 args = parser.parse_args()
 
 args.bnk = int(args.bnk)
@@ -139,6 +141,55 @@ for imgname in img_filenames:
             "bnk": best_bnk,
         }
     )
+
+
+# color sprites: every non black pixel is color 3 of sprite palette 0.
+# Each 8x16 tile uses both bitplanes, so a 1KB bank holds 32 tiles.
+COLOR_BNK_TILES = BNK_SIZE // 2
+color_banks = []  # list of lists of tiles
+color_imgs = get_imgs_from_csv(csv_filenames, type="sprite_color")
+for imgname in color_imgs:
+    img = Image.open(imgname).convert("RGB")
+    arr = (np.array(img).sum(axis=2) > 0).astype(np.int8) * 3
+    size, tiles, data = arr2tiles(arr, img.width, img.height, th=16)
+
+    # find a bank where all the new tiles fit
+    best_bnk = -1
+    for b, bnk in enumerate(color_banks):
+        n_new = len({t.tobytes() for t in tiles if not any(np.equal(t, t1).all() for t1 in bnk)})
+        if len(bnk) + n_new <= COLOR_BNK_TILES:
+            best_bnk = b
+            break
+    if best_bnk < 0:
+        if len(set(t.tobytes() for t in tiles)) > COLOR_BNK_TILES:
+            print("Error: sprite", imgname, "have too many tiles. ignoring")
+            continue
+        color_banks.append([])
+        best_bnk = len(color_banks) - 1
+
+    bnk = color_banks[best_bnk]
+    for i, t in enumerate(tiles):
+        idx = next((j for j, t1 in enumerate(bnk) if np.equal(t, t1).all()), -1)
+        if idx < 0:
+            idx = len(bnk)
+            bnk.append(t)
+        # tile index << 1, palette bit = 0
+        data[i] = idx << 1
+
+    data_list.append(
+        {
+            "name": imgname,
+            "size": size,
+            "data": data,
+            "bnk": args.colorbnk + best_bnk - args.bnk,
+        }
+    )
+
+if args.colorchrfile != "" and color_banks:
+    with open(args.colorchrfile, "wb") as f:
+        for bnk in color_banks:
+            f.write(bytes(spritest2chr(bnk)))
+            f.write(bytes(1024 - len(bnk) * 32))
 
 
 # tile merge phase

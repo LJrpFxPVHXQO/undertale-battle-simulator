@@ -97,7 +97,8 @@ menu_setup_monster:
         ; pull x
         plx
     to_x_dec @loop, #-1
-    JMP draw_menu
+    JSR draw_menu
+    JMP menu_draw_hpbars
 
 
 menu_down:

@@ -1,3 +1,4 @@
 TXT_EMBER_START	* Ember guards the last<b>  warm coal.<fp>
 TXT_EMBER_CHECK	* EMBER - ATK 12 DEF 4<wait:30><b>* It burns with patient focus.<fp>
-TXT_EMBER_ACT_LISTEN	* You listen to Ember's crackle.<wait:30><b>* The sparks settle for a moment.<fp>
+TXT_EMBER_ACT_LISTEN	* You listen to Ember's<b>  crackle.<wait:30><p>* The sparks settle for<b>  a moment.<fp>
+TXT_EMBER_SPARE_NOT_READY	* Ember isn't ready yet.<fp>

@@ -3,14 +3,20 @@
 hitbox_call_table_move_lo:
     .byte <(call_hitbox_none-1)
     .byte <(call_hitbox_move_diamond-1)
-.repeat 254
+    .byte <(call_hitbox_move_fall-1)
+    .byte <(call_hitbox_none-1)
+    .byte <(call_hitbox_move_fly-1)
+.repeat 251
     .byte <(call_hitbox_none-1)
 .endrepeat
 
 hitbox_call_table_move_hi:
     .byte >(call_hitbox_none-1)
     .byte >(call_hitbox_move_diamond-1)
-.repeat 254
+    .byte >(call_hitbox_move_fall-1)
+    .byte >(call_hitbox_none-1)
+    .byte >(call_hitbox_move_fly-1)
+.repeat 251
     .byte >(call_hitbox_none-1)
 .endrepeat
 
@@ -18,14 +24,20 @@ hitbox_call_table_move_hi:
 hitbox_call_table_hit_lo:
     .byte <(call_hitbox_none-1)
     .byte <(call_hitbox_hit_diamond-1)
-.repeat 254
+    .byte <(call_hitbox_hit_diamond-1)
+    .byte <(call_hitbox_hit_diamond-1)
+    .byte <(call_hitbox_hit_diamond-1)
+.repeat 251
     .byte <(call_hitbox_none-1)
 .endrepeat
 
 hitbox_call_table_hit_hi:
     .byte >(call_hitbox_none-1)
     .byte >(call_hitbox_hit_diamond-1)
-.repeat 254
+    .byte >(call_hitbox_hit_diamond-1)
+    .byte >(call_hitbox_hit_diamond-1)
+    .byte >(call_hitbox_hit_diamond-1)
+.repeat 251
     .byte >(call_hitbox_none-1)
 .endrepeat
 
@@ -62,6 +74,47 @@ call_hitbox_move_diamond:
     :
 
     @end:
+    RTS
+
+
+; moves toward the player every frame, but stands still while fly_pause is running
+call_hitbox_move_fly:
+    LDA fly_pause
+    BNE @end
+    ; half speed: move every other frame
+    LDA frame_counter
+    LSR
+    BCS @end
+
+    LDA hitbox_x, X
+    CMP player_x
+    blt :+
+        DEC hitbox_x, X
+        DEC hitbox_w, X
+        JMP :++
+    :
+        INC hitbox_x, X
+        INC hitbox_w, X
+    :
+
+    LDA hitbox_y, X
+    CMP player_y
+    blt :+
+        DEC hitbox_y, X
+        DEC hitbox_h, X
+        JMP :++
+    :
+        INC hitbox_y, X
+        INC hitbox_h, X
+    :
+
+    @end:
+    RTS
+
+
+call_hitbox_move_fall:
+    INC hitbox_y, X
+    INC hitbox_h, X
     RTS
 
 

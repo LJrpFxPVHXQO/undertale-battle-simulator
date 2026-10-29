@@ -1,3 +1,4 @@
 TXT_FROGGIT_START	* Froggit hopped close!<fp>
 TXT_FROGGIT_CHECK	* FROGGIT - ATK 4 DEF 0<wait:30><b>* Life is difficult for this<b>  enemy.<fp>
 TXT_FROGGIT_ACT_COMPLIMENT	* You compliment Froggit.<wait:30><b>* It didn't understand, but<b>  was flattered.<fp>
+TXT_FROGGIT_SPARE_NOT_READY	* Froggit isn't ready yet.<fp>

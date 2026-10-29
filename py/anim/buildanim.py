@@ -47,6 +47,9 @@ for fn in csv_filenames:
             img = os.path.join(os.path.dirname(fn), row[0])
             name = os.path.join(os.path.dirname(fn), row[1])
             imgtype = row[2]
+            # color sprites share the sprite anim list and ids
+            if imgtype == "sprite_color":
+                imgtype = "sprite"
             x = int(row[3]) if len(row) > 3 else 0
             y = int(row[4]) if len(row) > 4 else 0
             delay = int(row[5]) if len(row) > 5 else 0

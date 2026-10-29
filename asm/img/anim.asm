@@ -33,8 +33,9 @@ update_anims:
                 ; LDA anims_flag, X
                 AND #$03
                 STA cur_monster_fight_pos
-                ; clear entity sprites
+                ; clear entity sprites (tagged with the anim slot)
                 phx
+                TXA
                 JSR clear_entity_spr
                 plx
                 ; tmp = anim index

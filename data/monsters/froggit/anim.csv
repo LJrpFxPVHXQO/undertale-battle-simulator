@@ -1,2 +1,5 @@
 img,name,bkg_or_spr,pos_x,pos_y,duration_time,next_name,atr_if_spr,move_if_spr
-froggit.png,froggit_bkg,background,-24,0,0
+froggit.png,froggit_bkg,background,-24,32,0
+froggit_sit.png,froggit_sit,sprite,0,0,255
+froggit_jump.png,froggit_jump,sprite,0,0,255
+froggit_fly.png,froggit_fly,sprite,0,0,255

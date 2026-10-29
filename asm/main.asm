@@ -137,6 +137,25 @@ MAIN_loop:
     ;
     JSR update_hitboxes
 
+    ; game over when HP reaches 0 or goes negative
+    LDA player_stats + PlayerStat::hp
+    BEQ @game_over
+    BPL @alive
+    @game_over:
+        LDA #$00
+        STA player_stats + PlayerStat::hp
+        JSR begin_battle_exit
+        ; a monster code bank may be mapped at $8000 during its attack
+        LDA #<.bank(INIT)+$80
+        STA mmc5_banks+1
+        STA MMC5_PRG_BNK0
+        JSR run_gameover
+        JSR INIT
+        LDA #$00
+        STA battle_exit_state
+        JMP MAIN_loop
+    @alive:
+
     ; if number of dialog > 0
     LDA n_dialog
     BEQ :+

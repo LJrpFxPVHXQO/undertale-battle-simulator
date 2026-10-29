@@ -32,7 +32,7 @@ update_player_hp:
     :
 
     ; open packet of size 15
-    LDA #15
+    LDA #16
     STA background, X
     INX
     ; write ppu adr
@@ -43,16 +43,22 @@ update_player_hp:
     STA background, X
     INX
 
-    ; h = hp >> 1
+    ; h = hp
     LDA player_stats + PlayerStat::hp
-    LSR
+    STA tmp+3
+    ASL
+    CLC
+    ADC tmp+3
     STA @h
-    ; mh = maxhp >> 1
+    ; mh = maxhp
     LDA player_stats + PlayerStat::maxhp
-    LSR
+    STA tmp+3
+    ASL
+    CLC
+    ADC tmp+3
     STA @mh
     ; for i from 8 to 0
-    for_y @loop, #8
+    for_y @loop, #9
         ; tile = #' '
         mov @tile, #' '
         ; if mh == 0

@@ -195,6 +195,9 @@
     cur_music_bank: .res 1
     cur_dpcm_bank: .res 1
 
+    ; nonzero once the landing page was shown (cleared on every reset)
+    landing_done: .res 1
+
     ;================
     ; Group: ZP - LZ variables
     ;================
@@ -414,6 +417,19 @@ OAM:
         monster_1: .tag MonsterStat
         monster_2: .tag MonsterStat
 
+        ; HP bar work variables
+        hpb_hp: .res 1
+        hpb_max: .res 1
+        hpb_acc: .res 2
+        hpb_cnt: .res 1
+        hpb_fill: .res 1
+        hpb_i: .res 1
+        hpb_e: .res 1
+        hpb_t: .res 1
+        hpb_cur: .res 1
+        hpb_target: .res 1
+        hpb_x: .res 1
+
         ; monster_vars in ZP
 
         ; Variable: monster_act_str
@@ -441,6 +457,9 @@ OAM:
         ;----------------
         ; ID of the current fight.
         fight_id: .res 1
+
+        ; Kills so far in this run: each kill gives a level (+4 max HP). Spares give nothing.
+        kill_lv: .res 1
 
         ; Variable: cur_monster_fight_pos
         ;----------------
@@ -588,8 +607,15 @@ OAM:
         hitbox_h :.res MAX_HITBOX
         hitbox_a :.res MAX_HITBOX
 
+        ; Froggit fly attack state
+        fly_pause: .res 1
+        fly_count: .res 1
+        fly_pat: .res 1
+        fly_t: .res 1
+        scene_kind: .res 1
+
         ; padding
-        .res MAX_HITBOX*2
+        .res MAX_HITBOX*2-5
 
     img_buf: .res 512
 

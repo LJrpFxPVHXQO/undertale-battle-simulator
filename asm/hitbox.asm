@@ -9,7 +9,7 @@ update_hitboxes:
         ; if hitbox inactive (type == 0)
         LDA hitbox_t, X
             ; continue
-            BEQ :++
+            BEQ @next
 
         ; call_hitbox_move(X)
         TAY
@@ -28,20 +28,85 @@ update_hitboxes:
             STA anims_y, Y
             ;
             JSR update_entity_hitbox_pos
+            ; falling hitboxes are only visible inside the box
+            LDA hitbox_t, X
+            CMP #HITBOX::FALL_DIAMOND
+            BNE :+
+                JSR clip_hitbox_spr
         :
+        ; the hitbox may have been removed
+        LDA hitbox_t, X
+        BEQ @next
         ; if is_player_hit(X)
         JSR is_player_hit
-        BNE :+
+        BNE @next
             LDA hitbox_t, X
             TAY
             ; call_hitbox_hit(X)
             phx
             JSR call_hitbox_hit
             plx
-        :
+        @next:
     to_x_dec @loop, #-1
 
     RTS
+
+
+; X = hitbox index
+; Place the sprites of a falling hitbox and clip them to the box.
+sync_hitbox_spr:
+    LDA hitbox_a, X
+    TAY
+    DEY
+    JSR update_entity_hitbox_pos
+    ; fall through
+
+
+; X = hitbox index (type FALL_DIAMOND, linked to an 8x16 sprite)
+; Hide the sprite while it is not fully inside the box,
+; remove the hitbox once it went out through the bottom.
+clip_hitbox_spr:
+    ; bottom: y + 11 >= bound_y2 -> out
+    LDA hitbox_y, X
+    CLC
+    ADC #11
+    CMP player_bound_y2
+    BCS @remove
+    ; top: y + 4 < bound_y1 -> hidden
+    LDA hitbox_y, X
+    CLC
+    ADC #4
+    CMP player_bound_y1
+    BCC @hide
+    ; left: x + 4 < bound_x1 -> hidden
+    LDA hitbox_x, X
+    CLC
+    ADC #4
+    CMP player_bound_x1
+    BCC @hide
+    ; right: x + 3 >= bound_x2 -> hidden
+    LDA hitbox_x, X
+    CLC
+    ADC #3
+    CMP player_bound_x2
+    BCS @hide
+    RTS
+
+    @hide:
+    LDY #MAX_SPR-1
+    :
+        LDA spr_buf_anim, Y
+        CMP hitbox_a, X
+        BNE :+
+            LDA #$FF
+            STA spr_buf_y, Y
+        :
+        DEY
+        BPL :--
+    RTS
+
+    @remove:
+    JMP remove_hitbox
 
 
 ; X = hitbox index
@@ -116,6 +181,8 @@ new_hitbox:
             STA hitbox_y, Y
             PLA
             STA hitbox_t, Y
+            LDA #$00
+            STA hitbox_a, Y
             RTS
         :
     to_y_dec @loop, #0
@@ -152,4 +219,41 @@ remove_hitbox:
         JSR clear_entity_spr
         plx
     :
+    RTS
+
+; A kill gives a level; killing Froggit also shows the kill scene.
+kill_reward:
+    INC kill_lv
+    LDA fight_id
+    CMP #$02
+    BNE :+
+    JMP run_kill_scene
+:
+    RTS
+
+; Run the Froggit spare / kill picture scene from any bank context.
+run_kill_scene:
+    LDA #$01
+    BNE run_scene
+run_spare_scene:
+    LDA #$00
+run_scene:
+    STA scene_kind
+    LDA mmc5_banks+1
+    PHA
+    LDA mmc5_banks+2
+    PHA
+    LDA #<.bank(INIT)+$80
+    STA mmc5_banks+1
+    STA MMC5_PRG_BNK0
+    LDA #<.bank(spare_scene_main)+$80
+    STA mmc5_banks+2
+    STA MMC5_PRG_BNK1
+    JSR spare_scene_main
+    PLA
+    STA mmc5_banks+2
+    STA MMC5_PRG_BNK1
+    PLA
+    STA mmc5_banks+1
+    STA MMC5_PRG_BNK0
     RTS

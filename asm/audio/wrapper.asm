@@ -26,6 +26,11 @@ famistudio_dpcm_bank_callback:
 
 ; X = idx
 play_music:
+    ; an NMI in the middle would run famistudio_update and remap the banks
+    LDA ppu_ctrl_val
+    AND #$7F
+    STA PPU_CTRL
+
     ; set FamiStudio/tables bank
     mov MMC5_PRG_BNK0, #<.bank(famistudio_music_play)+$80
 
@@ -52,5 +57,8 @@ play_music:
     ; restore bank
     mov MMC5_PRG_BNK0, mmc5_banks+1
     mov MMC5_PRG_BNK1, mmc5_banks+2
+    ; re-enable NMI
+    LDA ppu_ctrl_val
+    STA PPU_CTRL
     ; return
     RTS

@@ -156,6 +156,9 @@
 .include "memory.asm"
 
 
+; Soul Dodge mini-game (own PRG bank)
+.include "dodge/dodge.asm"
+
 .segment "INIT_BNK"
     ; reset code
     .include "vector/rst.asm"
@@ -166,6 +169,7 @@
     .include "init/palette.asm"
     .include "init/draw_db.asm"
     .include "init/clear_nt.asm"
+    .include "monster/hpbar.asm"
 
     ; FamiStudio Sound Engine
     .include "audio/famistudio_config.asm"

@@ -400,7 +400,7 @@
     ITEM_NAME_SIZE = 16
     ITEM_NAME_SHIFT = 4
 
-    FIGHT_STRICK_TIME = 15*5
+    FIGHT_STRICK_TIME = 9*6
     FIGHT_NUMBER_TIME = 15*5
     DMG_SPRITE_BNK = (4*0)+2
 
@@ -632,4 +632,7 @@
     .enum HITBOX
         NONE
         FOLLOW_DIAMOND
+        FALL_DIAMOND
+        FROG
+        FLY
     .endenum
