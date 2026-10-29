@@ -3,4 +3,8 @@ get_monster_chr_bnk_offset:
     LDA cur_monster_fight_pos
     TAX
     INX
+    LDA sans_strk
+    BEQ :+
+        INX
+    :
     RTS

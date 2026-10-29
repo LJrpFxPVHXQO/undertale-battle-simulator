@@ -1,0 +1,7 @@
+img,name,bkg_or_spr,pos_x,pos_y,duration_time,next_name,atr_if_spr,move_if_spr
+sans_body.png,sans_bkg,background,-32,8,0
+sbone_8.png,sans_bone8,sprite,0,0,255
+sbone_16.png,sans_bone16,sprite,0,0,255
+sbone_24.png,sans_bone24,sprite,0,0,255
+sbone_32.png,sans_bone32,sprite,0,0,255
+sbone_h.png,sans_boneh,sprite,0,0,255

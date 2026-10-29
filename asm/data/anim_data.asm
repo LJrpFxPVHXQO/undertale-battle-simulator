@@ -11,6 +11,9 @@ anim_data:
     ; ANIM_DATA_MONSTERS_FROGGIT_FROGGIT_BKG
     .byte 232, 32, 0, 0 ; x, y, delay, type
     .word IMG_DATA_MONSTERS_FROGGIT_FROGGIT, 0 ; img, next
+    ; ANIM_DATA_MONSTERS_SANS_SANS_BKG
+    .byte 224, 8, 0, 0 ; x, y, delay, type
+    .word IMG_DATA_MONSTERS_SANS_SANS_BODY, 0 ; img, next
     ; ANIM_DATA_MONSTERS_TESTOBUG_ANIMS_BKG_1
     .byte 248, 0, 60, 0 ; x, y, delay, type
     .word IMG_DATA_MONSTERS_TESTOBUG_ANIMS_BKG_1, ANIM_DATA_MONSTERS_TESTOBUG_ANIMS_BKG_2 ; img, next
@@ -45,6 +48,21 @@ anim_data:
     ; ANIM_DATA_MONSTERS_FROGGIT_FROGGIT_FLY
     .byte 0, 0, 255, 1 ; x, y, delay, type
     .word IMG_DATA_MONSTERS_FROGGIT_FROGGIT_FLY, 0 ; img, next
+    ; ANIM_DATA_MONSTERS_SANS_SANS_BONE8
+    .byte 0, 0, 255, 1 ; x, y, delay, type
+    .word IMG_DATA_MONSTERS_SANS_SBONE_8, 0 ; img, next
+    ; ANIM_DATA_MONSTERS_SANS_SANS_BONE16
+    .byte 0, 0, 255, 1 ; x, y, delay, type
+    .word IMG_DATA_MONSTERS_SANS_SBONE_16, 0 ; img, next
+    ; ANIM_DATA_MONSTERS_SANS_SANS_BONE24
+    .byte 0, 0, 255, 1 ; x, y, delay, type
+    .word IMG_DATA_MONSTERS_SANS_SBONE_24, 0 ; img, next
+    ; ANIM_DATA_MONSTERS_SANS_SANS_BONE32
+    .byte 0, 0, 255, 1 ; x, y, delay, type
+    .word IMG_DATA_MONSTERS_SANS_SBONE_32, 0 ; img, next
+    ; ANIM_DATA_MONSTERS_SANS_SANS_BONEH
+    .byte 0, 0, 255, 1 ; x, y, delay, type
+    .word IMG_DATA_MONSTERS_SANS_SBONE_H, 0 ; img, next
     ; ANIM_DATA_MONSTERS_STRIKE_STRIKE_1
     .byte 248, 24, 8, 1 ; x, y, delay, type
     .word IMG_DATA_MONSTERS_STRIKE_STRIKE1, ANIM_DATA_MONSTERS_STRIKE_STRIKE_2 ; img, next

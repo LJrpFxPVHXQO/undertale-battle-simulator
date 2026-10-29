@@ -170,5 +170,16 @@ update_damage:
     :
     STA fight_damage
 
+    ; Sans dodges every attack for the first 22 turns
+    LDA fight_id
+    CMP #$04
+    BNE :+
+    LDA sans_turns
+    CMP #22
+    BCS :+
+    INC sans_turns
+    LDA #$00
+    STA fight_damage
+:
     pull_ax
     RTS

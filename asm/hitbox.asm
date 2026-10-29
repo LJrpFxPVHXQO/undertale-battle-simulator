@@ -19,9 +19,19 @@ update_hitboxes:
         ; if hitbox link to animation
         LDA hitbox_a, X
         BEQ :+
-            ; anim[Y].pos = hitbox[X].pos
             TAY
             DEY
+            ; bones are made of several sprites: move them together
+            LDA hitbox_t, X
+            CMP #HITBOX::BONE_FALL
+            BEQ @bone
+            CMP #HITBOX::BONE_LEFT
+            BNE @std
+            @bone:
+            JSR shift_entity_spr
+            JMP :+
+            @std:
+            ; anim[Y].pos = hitbox[X].pos
             LDA hitbox_x, X
             STA anims_x, Y
             LDA hitbox_y, X
@@ -49,6 +59,42 @@ update_hitboxes:
         @next:
     to_x_dec @loop, #-1
 
+    RTS
+
+
+; X = hitbox index, Y = anim index
+; Move every sprite of the anim by the distance between the anim and the hitbox.
+shift_entity_spr:
+    LDA hitbox_x, X
+    SEC
+    SBC anims_x, Y
+    STA tmp+0
+    LDA hitbox_y, X
+    SEC
+    SBC anims_y, Y
+    STA tmp+1
+    LDA hitbox_x, X
+    STA anims_x, Y
+    LDA hitbox_y, X
+    STA anims_y, Y
+    INY
+    STY tmp+2
+    LDY #MAX_SPR-1
+    @loop:
+        LDA spr_buf_anim, Y
+        CMP tmp+2
+        BNE @next
+            LDA spr_buf_x, Y
+            CLC
+            ADC tmp+0
+            STA spr_buf_x, Y
+            LDA spr_buf_y, Y
+            CLC
+            ADC tmp+1
+            STA spr_buf_y, Y
+        @next:
+        DEY
+        BPL @loop
     RTS
 
 

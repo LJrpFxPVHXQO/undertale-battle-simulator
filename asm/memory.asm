@@ -614,8 +614,19 @@ OAM:
         fly_t: .res 1
         scene_kind: .res 1
 
+        ; Sans fight state
+        sans_kind: .res 1
+        sans_x: .res 1
+        sans_y: .res 1
+        sans_turns: .res 1
+        sans_glide: .res 1
+        sans_off: .res 1
+        sans_strk: .res 1
+        sans_gx: .res 1
+        sans_gf: .res 1
+
         ; padding
-        .res MAX_HITBOX*2-5
+        .res MAX_HITBOX*2-14
 
     img_buf: .res 512
 

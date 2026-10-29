@@ -196,6 +196,16 @@ NMI:
         BIT PPU_STATUS
         ; set scrolling position to scroll_x, scroll_y
         LDX scroll_x
+        LDY #$00
+        LDA sans_glide
+        BEQ :+
+            LDY #$01
+            TXA
+            CLC
+            ADC sans_gx
+            TAX
+        :
+        STY sans_gf
         STX PPU_SCROLL
         LDX scroll_y
         STX PPU_SCROLL

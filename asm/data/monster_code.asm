@@ -12,7 +12,7 @@ monster_code_bnk:
     .byte MONSTER_CODE_START_BNK + <((m_1_start - $8000) >> 13) ; monster 1
     .byte MONSTER_CODE_START_BNK + <((m_2_start - $8000) >> 13) ; monster 2
     .byte MONSTER_CODE_START_BNK + <((m_3_start - $8000) >> 13) ; monster 3
-    .byte 0
+    .byte MONSTER_CODE_START_BNK + <((m_4_start - $8000) >> 13) ; monster 4
     .byte 0
     .byte 0
     .byte 0
@@ -280,7 +280,7 @@ monster_code_struct:
     .word m_1_start,m_1_turn-m_1_start,m_1_custom-m_1_turn,m_1_hit-m_1_custom,m_1_act-m_1_hit,m_1_item-m_1_act,m_1_spare-m_1_item,m_1_flee-m_1_spare ; monster 1
     .word m_2_start,m_2_turn-m_2_start,m_2_custom-m_2_turn,m_2_hit-m_2_custom,m_2_act-m_2_hit,m_2_item-m_2_act,m_2_spare-m_2_item,m_2_flee-m_2_spare ; monster 2
     .word m_3_start,m_3_turn-m_3_start,m_3_custom-m_3_turn,m_3_hit-m_3_custom,m_3_act-m_3_hit,m_3_item-m_3_act,m_3_spare-m_3_item,m_3_flee-m_3_spare ; monster 3
-    .tag MonsterCode
+    .word m_4_start,m_4_turn-m_4_start,m_4_custom-m_4_turn,m_4_hit-m_4_custom,m_4_act-m_4_hit,m_4_item-m_4_act,m_4_spare-m_4_item,m_4_flee-m_4_spare ; monster 4
     .tag MonsterCode
     .tag MonsterCode
     .tag MonsterCode

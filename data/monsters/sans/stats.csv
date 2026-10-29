@@ -1,0 +1,21 @@
+id,4
+name,"Sans    "
+maxhp,1
+hp,1
+atk,1
+def,1
+xp,0
+gold,0
+item,0
+itemchance,0
+
+
+code,code.asm
+code_start,start
+code_turn,turn
+code_custom,custom
+code_hit,hit
+code_act,act
+code_item,item
+code_spare,spare
+code_flee,flee

@@ -117,11 +117,17 @@ INIT:
     ; show the landing page once per power-on, then restart init
     LDA landing_done
     BNE @landed
-        JSR run_landing
-        LDA #$00
-        STA kill_lv
         ; start a new run with Froggit (fight 2); winning moves on to Ember (fight 3)
         mov fight_id, #$02
+        JSR run_landing
+        ; the landing page sets bit 1 of landing_done when the debug skip is pressed
+        LDA landing_done
+        AND #$02
+        BEQ :+
+            mov fight_id, #$04
+        :
+        LDA #$00
+        STA kill_lv
         JMP INIT
     @landed:
 

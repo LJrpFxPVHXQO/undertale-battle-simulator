@@ -6,7 +6,11 @@ hitbox_call_table_move_lo:
     .byte <(call_hitbox_move_fall-1)
     .byte <(call_hitbox_none-1)
     .byte <(call_hitbox_move_fly-1)
-.repeat 251
+    .byte <(call_hitbox_move_bone_fall-1)
+    .byte <(call_hitbox_move_bone_left-1)
+    .byte <(call_hitbox_none-1)
+    .byte <(call_hitbox_none-1)
+.repeat 247
     .byte <(call_hitbox_none-1)
 .endrepeat
 
@@ -16,7 +20,11 @@ hitbox_call_table_move_hi:
     .byte >(call_hitbox_move_fall-1)
     .byte >(call_hitbox_none-1)
     .byte >(call_hitbox_move_fly-1)
-.repeat 251
+    .byte >(call_hitbox_move_bone_fall-1)
+    .byte >(call_hitbox_move_bone_left-1)
+    .byte >(call_hitbox_none-1)
+    .byte >(call_hitbox_none-1)
+.repeat 247
     .byte >(call_hitbox_none-1)
 .endrepeat
 
@@ -27,7 +35,11 @@ hitbox_call_table_hit_lo:
     .byte <(call_hitbox_hit_diamond-1)
     .byte <(call_hitbox_hit_diamond-1)
     .byte <(call_hitbox_hit_diamond-1)
-.repeat 251
+    .byte <(call_hitbox_hit_diamond-1)
+    .byte <(call_hitbox_hit_diamond-1)
+    .byte <(call_hitbox_hit_diamond-1)
+    .byte <(call_hitbox_none-1)
+.repeat 247
     .byte <(call_hitbox_none-1)
 .endrepeat
 
@@ -37,7 +49,11 @@ hitbox_call_table_hit_hi:
     .byte >(call_hitbox_hit_diamond-1)
     .byte >(call_hitbox_hit_diamond-1)
     .byte >(call_hitbox_hit_diamond-1)
-.repeat 251
+    .byte >(call_hitbox_hit_diamond-1)
+    .byte >(call_hitbox_hit_diamond-1)
+    .byte >(call_hitbox_hit_diamond-1)
+    .byte >(call_hitbox_none-1)
+.repeat 247
     .byte >(call_hitbox_none-1)
 .endrepeat
 
@@ -115,6 +131,32 @@ call_hitbox_move_fly:
 call_hitbox_move_fall:
     INC hitbox_y, X
     INC hitbox_h, X
+    RTS
+
+
+call_hitbox_move_bone_fall:
+    INC hitbox_y, X
+    INC hitbox_h, X
+    INC hitbox_y, X
+    INC hitbox_h, X
+    LDA hitbox_h, X
+    CMP player_bound_y2
+    BCC @end
+    JMP remove_hitbox
+    @end:
+    RTS
+
+
+call_hitbox_move_bone_left:
+    DEC hitbox_x, X
+    DEC hitbox_w, X
+    DEC hitbox_x, X
+    DEC hitbox_w, X
+    LDA hitbox_x, X
+    CMP player_bound_x1
+    BCS @end
+    JMP remove_hitbox
+    @end:
     RTS
 
 

@@ -13,7 +13,7 @@ monster_names_data:
     .byte "Froggit "
     .byte "Dummy   "
     .byte "Ember   "
-    .byte "XXXXXXXX"
+    .byte "Sans    "
     .byte "XXXXXXXX"
     .byte "XXXXXXXX"
     .byte "XXXXXXXX"

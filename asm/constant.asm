@@ -635,4 +635,8 @@
         FALL_DIAMOND
         FROG
         FLY
+        BONE_FALL
+        BONE_LEFT
+        BLOCK
+        DECOR
     .endenum
