@@ -160,8 +160,19 @@ call_hitbox_move_bone_left:
     RTS
 
 
+; damage by hitbox type: NONE, FOLLOW_DIAMOND, FALL_DIAMOND, FROG, FLY, BONE_FALL, BONE_LEFT, BLOCK, DECOR
+hitbox_damage:
+    .byte 0, 2, 2, 5, 1, 1, 1, 5, 0
+
+; Y = hitbox type
 call_hitbox_hit_diamond:
-    DEC player_stats + PlayerStat::hp
+    LDA player_stats + PlayerStat::hp
+    SEC
+    SBC hitbox_damage, Y
+    BCS :+
+        LDA #$00
+    :
+    STA player_stats + PlayerStat::hp
     ora_adr player_flag, #PLAYER_FLAG_DRAW_HP
     JMP remove_hitbox
 

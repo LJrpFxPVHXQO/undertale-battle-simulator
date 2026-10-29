@@ -348,8 +348,19 @@ frog_step:
     LDA #ANIM_DATA_MONSTERS_FROGGIT_FROGGIT_SIT
     JSR frog_show
     LDA @anim, X
-    BNE @tick
+    BNE :+
     RTS
+:
+    LDX #FROG_X
+    LDY player_bound_y2
+    LDA #HITBOX::FROG
+    JSR new_hitbox
+    TYA
+    PHA
+    JSR get_var_idx
+    PLA
+    STA @hb, X
+    JMP @tick
 
     @tick:
     INC @t, X
@@ -375,15 +386,6 @@ frog_step:
     BNE :+
     RTS
 :
-    LDX #FROG_X
-    LDY player_bound_y2
-    LDA #HITBOX::FROG
-    JSR new_hitbox
-    TYA
-    PHA
-    JSR get_var_idx
-    PLA
-    STA @hb, X
     LDA #FROG_X
     STA tmp+1
     LDA #$00
@@ -469,6 +471,13 @@ frog_step:
     STA hitbox_y, Y
     CLC
     ADC #FROG_HIT_H
+    STA hitbox_h, Y
+    ; sitting: the hitbox reaches the floor so it can be touched at the bottom of the box
+    LDA @mode, X
+    BNE @done
+    LDA player_bound_y2
+    CLC
+    ADC #$08
     STA hitbox_h, Y
     @done:
     RTS
