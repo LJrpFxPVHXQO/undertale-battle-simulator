@@ -14,6 +14,9 @@ anim_data:
     ; ANIM_DATA_MONSTERS_SANS_SANS_BKG
     .byte 224, 8, 0, 0 ; x, y, delay, type
     .word IMG_DATA_MONSTERS_SANS_SANS_BODY, 0 ; img, next
+    ; ANIM_DATA_MONSTERS_SANS_SANS_SWEAT_BKG
+    .byte 224, 8, 0, 0 ; x, y, delay, type
+    .word IMG_DATA_MONSTERS_SANS_SANS_SWEAT_BODY, 0 ; img, next
     ; ANIM_DATA_MONSTERS_TESTOBUG_ANIMS_BKG_1
     .byte 248, 0, 60, 0 ; x, y, delay, type
     .word IMG_DATA_MONSTERS_TESTOBUG_ANIMS_BKG_1, ANIM_DATA_MONSTERS_TESTOBUG_ANIMS_BKG_2 ; img, next

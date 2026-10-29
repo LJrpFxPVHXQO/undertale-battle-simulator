@@ -54,6 +54,20 @@ turn:
     STA @time, X
     STA @cnt, X
     STA @sp, X
+    ; halfway through the strikes Sans starts to sweat
+    LDA sans_turns
+    CMP #10
+    BCC :+
+    LDY cur_monster_fight_pos
+    LDA monster_flags, Y
+    AND #$02
+    BNE :+
+    LDA monster_flags, Y
+    ORA #$02
+    STA monster_flags, Y
+    display_anim ANIM_DATA_MONSTERS_SANS_SANS_SWEAT_BKG
+    JSR get_var_idx
+:
     JSR clear_main_box
     JSR text_post_process
     mov player_soul, #SOUL::RED
