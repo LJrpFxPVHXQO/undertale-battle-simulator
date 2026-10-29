@@ -2015,13 +2015,8 @@ spare_scene_main:
 
     LDA #$02
     STA MMC5_EXT_RAM
-    LDA scene_kind
-    BNE :+
-    LDA #$BD
-    BNE :++
-:
-    LDA #$BC
-:
+    LDX scene_kind
+    LDA scene_ex_bank, X
     LDX #$00
     :
         STA MMC5_EXP_RAM+$000, X
@@ -2036,45 +2031,40 @@ spare_scene_main:
     AND #($FF - PPU_CTRL_INC)
     STA PPU_CTRL
     BIT PPU_STATUS
-    LDA scene_kind
-    BNE @kill_nt
-    LDA #>($2000+SPARE_FIRST_ROW*32)
+    ; tmp+0/1 = nametable data, tmp+2 = full pages, tmp+3 = remaining bytes
+    LDX scene_kind
+    LDA scene_ppu_hi, X
     STA PPU_ADDR
-    LDA #<($2000+SPARE_FIRST_ROW*32)
+    LDA scene_ppu_lo, X
     STA PPU_ADDR
-    LDA #<spare_nt
+    LDA scene_nt_lo, X
     STA tmp+0
-    LDA #>spare_nt
+    LDA scene_nt_hi, X
     STA tmp+1
-    LDA #<(SPARE_ROWS*32)
+    LDA scene_len_hi, X
     STA tmp+2
-    JMP @copy_nt
-    @kill_nt:
-    LDA #>($2000+KILL_FIRST_ROW*32)
-    STA PPU_ADDR
-    LDA #<($2000+KILL_FIRST_ROW*32)
-    STA PPU_ADDR
-    LDA #<kill_nt
-    STA tmp+0
-    LDA #>kill_nt
-    STA tmp+1
-    LDA #<(KILL_ROWS*32)
-    STA tmp+2
-    @copy_nt:
+    LDA scene_len_lo, X
+    STA tmp+3
     LDY #$00
+    LDA tmp+2
+    BEQ @copy_rest
+    @copy_page:
     :
         LDA (tmp+0), Y
         STA PPU_DATA
         INY
         BNE :-
     INC tmp+1
-    LDA tmp+2
+    DEC tmp+2
+    BNE @copy_page
+    @copy_rest:
+    LDA tmp+3
     BEQ @copy_done
     :
         LDA (tmp+0), Y
         STA PPU_DATA
         INY
-        CPY tmp+2
+        CPY tmp+3
         BNE :-
     @copy_done:
 
@@ -2092,13 +2082,12 @@ spare_scene_main:
     STA background_index
     STA background+0
 
-    ; song 35 = "Bird That Carries You Over A Disproportionately Small Gap"
-    ; song 29 = "Danger Mystery" (kill)
-    LDX #35
-    LDA scene_kind
-    BEQ :+
-    LDX #29
-:
+    ; song 35 = "Bird That Carries You Over A Disproportionately Small Gap" (Froggit spare)
+    ; song 29 = "Danger Mystery" (Froggit kill)
+    ; song 94 = "Respite" (Sans spare), song 86 = "Don't Give Up" (Sans kill)
+    LDX scene_kind
+    LDA scene_song, X
+    TAX
     JSR play_music
 
     LDA #(PPU_MASK_BKG+PPU_MASK_BKG8+PPU_MASK_SPR+PPU_MASK_SPR8)
@@ -2131,6 +2120,17 @@ spare_scene_main:
 
 .include "spare_img.inc"
 .include "kill_img.inc"
+.include "sans_img.inc"
+
+; scene_kind: 0 = Froggit spare, 1 = Froggit kill, 2 = Sans spare, 3 = Sans kill
+scene_ex_bank: .byte $BD, $BC, $BA, $BB
+scene_song:    .byte 35, 29, 94, 86
+scene_ppu_hi:  .byte >($2000+SPARE_FIRST_ROW*32), >($2000+KILL_FIRST_ROW*32), >($2000+SANS_SPARE_FIRST_ROW*32), >($2000+SANS_KILL_FIRST_ROW*32)
+scene_ppu_lo:  .byte <($2000+SPARE_FIRST_ROW*32), <($2000+KILL_FIRST_ROW*32), <($2000+SANS_SPARE_FIRST_ROW*32), <($2000+SANS_KILL_FIRST_ROW*32)
+scene_nt_lo:   .byte <spare_nt, <kill_nt, <sans_spare_nt, <sans_kill_nt
+scene_nt_hi:   .byte >spare_nt, >kill_nt, >sans_spare_nt, >sans_kill_nt
+scene_len_hi:  .byte >(SPARE_ROWS*32), >(KILL_ROWS*32), >(SANS_SPARE_ROWS*32), >(SANS_KILL_ROWS*32)
+scene_len_lo:  .byte <(SPARE_ROWS*32), <(KILL_ROWS*32), <(SANS_SPARE_ROWS*32), <(SANS_KILL_ROWS*32)
 
 dd_s_hope: .asciiz "Don't lose hope!"
 .include "gameover_img.inc"

@@ -274,6 +274,13 @@ m_4_turn:
     LDA #$00
     STA @state ,  X
     INC @att ,  X
+    ; after the 22 dodged strikes, Sans offers the last chance to spare
+    LDA sans_turns
+    CMP #22
+    BCC :+
+    set_menu_dialog TXT_SANS_DROP
+    JSR get_var_idx
+:
     mov futur_box_pos_x1 ,  #$08
     mov futur_box_pos_x2 ,  #$F6
     mov player_soul ,  #SOUL::MENU
@@ -557,6 +564,9 @@ m_4_spare:
     JSR get_var_idx
     LDA @spare_wait ,  X
     BNE @spare_wait_dialog
+    LDA sans_turns
+    CMP #22
+    BCS @spare_win
     INC @spare_wait ,  X
     call_read_dialog TXT_SANS_SPARE_NOT_READY
     RTS
@@ -569,6 +579,10 @@ m_4_spare:
     JMP clear_event
     @spare_end:
     RTS
+    @spare_win:
+    LDA #$02
+    JSR run_scene
+    JMP begin_battle_victory
 
 m_4_flee:
     JMP clear_event

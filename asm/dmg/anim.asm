@@ -242,15 +242,11 @@ sans_glide_update:
 
 ; Sans dies from the first real hit: clears carry (defeated) for fight 4 with damage
 sans_kill_check:
-    PHP
     LDA fight_id
-    CMP #$04
+    EOR #$04
     BNE @keep
     LDA fight_damage
     BEQ @keep
-    PLP
     CLC
-    RTS
     @keep:
-    PLP
     RTS

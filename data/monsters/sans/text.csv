@@ -1,3 +1,4 @@
 TXT_SANS_START	* it's a beautiful day<b>  outside.<fp>
 TXT_SANS_CHECK	* SANS - ATK 1 DEF 1<wait:30><b>* The easiest enemy.<fp>
 TXT_SANS_SPARE_NOT_READY	* Sans isn't having it.<fp>
+TXT_SANS_DROP	* just drop your weapon,<b>  and...<fp>

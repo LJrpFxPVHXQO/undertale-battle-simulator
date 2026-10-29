@@ -267,17 +267,20 @@ remove_hitbox:
     :
     RTS
 
-; A kill gives a level; killing Froggit also shows the kill scene.
+; A kill gives a level; killing Froggit or Sans also shows a kill scene.
 kill_reward:
     INC kill_lv
+    ; fight 2 (Froggit) -> scene 1, fight 4 (Sans) -> scene 3
     LDA fight_id
-    CMP #$02
-    BNE :+
-    JMP run_kill_scene
+    LSR
+    BCS :+
+    ASL
+    SBC #$00
+    BNE run_scene
 :
     RTS
 
-; Run the Froggit spare / kill picture scene from any bank context.
+; Run a spare / kill picture scene from any bank context (A = scene_kind: 0 Froggit spare, 1 Froggit kill, 2 Sans spare, 3 Sans kill).
 run_kill_scene:
     LDA #$01
     BNE run_scene
