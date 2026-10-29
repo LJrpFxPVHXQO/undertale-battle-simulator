@@ -388,14 +388,14 @@
 
     PACKET_DRAW_LIMIT = $48
 
-    MAX_MENU = 6
+    MAX_MENU = 8
 
     MAX_DIALOGBOX = 4
 
     HITMARK_TILE = $1E
     HITMARK_PLT = $00
 
-    INV_SIZE = 6
+    INV_SIZE = 8
 
     ITEM_NAME_SIZE = 16
     ITEM_NAME_SHIFT = 4

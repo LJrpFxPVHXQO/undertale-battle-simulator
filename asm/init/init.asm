@@ -1,5 +1,9 @@
 
 
+; 1 = Bandage, 2 = Monster Candy, 3 = Spider Donut, 4 = Cinnamon Pie
+default_inventory:
+.byte 1, 2, 2, 2, 2, 3, 4, 0
+
 default_player_stat:
 .byte 20, 20, 1, 1, 1, 0, 0, 0, 0, "FRISK "
 
@@ -138,9 +142,8 @@ INIT:
 
     ; set inventory
     for_x @inv, #INV_SIZE-1
-        TXA
+        LDA default_inventory, X
         STA player_inv, X
-        INC player_inv, X
     to_x_dec @inv, #-1
 
     ; Init FamiStudio: song 9 = "Enemy Approaching"

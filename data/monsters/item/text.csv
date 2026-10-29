@@ -1,1 +1,4 @@
-TXT_ITEM_1	* You use an useless item<p><fp>
+TXT_ITEM_BANDAGE	* You re-applied the Bandage.<wait:30><b>* You recovered 10 HP!<fp>
+TXT_ITEM_CANDY	* You ate the Monster Candy.<wait:30><b>* You recovered 10 HP!<fp>
+TXT_ITEM_DONUT	* You ate the Spider Donut.<wait:30><b>* You recovered 12 HP!<fp>
+TXT_ITEM_PIE	* You ate the Cinnamon Pie.<wait:30><b>* Your HP was maxed out!<fp>

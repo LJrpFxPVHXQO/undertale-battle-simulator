@@ -44,6 +44,8 @@ menu_update_dialog:
 ; adr
 menu_setup_monster:
     ; menu_size = n_monster
+    LDA #$00
+    STA menu_paged
     mvx menu_size, n_monster
     ; for n_monster
     DEX
@@ -113,8 +115,21 @@ menu_down:
     ; else
     :
         ; menu_idx++
+    JMP menu_set_idx
+
+
+; X = new menu_idx, redraw the entries if the page changes
+menu_set_idx:
+    LDA menu_paged
+    BEQ @same
+    TXA
+    EOR menu_idx
+    AND #$FC
+    BEQ @same
+        STX menu_idx
+        JMP draw_menu
+    @same:
     STX menu_idx
-    ; return
     RTS
 
 
@@ -128,9 +143,7 @@ menu_up:
     :
         ; menu_idx--
     DEX
-    STX menu_idx
-    ; return
-    RTS
+    JMP menu_set_idx
 
 
 menu_go:
@@ -179,6 +192,9 @@ menu_setup:
     LDY #$00
     LDA (tmp), Y
     STA menu_size
+    LDA #$00
+    STA menu_paged
+    LDA menu_size
     ; X = menu_size - 1
     TAX
     DEX

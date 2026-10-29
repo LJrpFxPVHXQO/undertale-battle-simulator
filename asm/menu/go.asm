@@ -79,12 +79,16 @@ menu_go_item:
         ; menu_size++
         INC menu_size
 
-        ; menu_list_pos_x[X] = menu_data_pos_x[X]
-        LDA menu_data_pos_x, X
+        ; position inside the page (4 entries per page)
+        phy
+        TXA
+        AND #$03
+        TAY
+        LDA menu_data_pos_x, Y
         STA menu_list_pos_x, X
-        ; menu_list_pos_y[X] = menu_data_pos_y[X]
-        LDA menu_data_pos_y, X
+        LDA menu_data_pos_y, Y
         STA menu_list_pos_y, X
+        ply
 
         ; menu_list[X] = menu_go_item_choice
         LDA #<menu_go_item_choice
@@ -117,6 +121,8 @@ menu_go_item:
     STA MMC5_PRG_BNK0
 
     ; if no item
+    LDA #$01
+    STA menu_paged
     LDA menu_size
     BNE :+
         ; cancel menu & return
@@ -151,6 +157,9 @@ menu_go_act_monster:
     :
     ; menu_size = act size
     STA menu_size
+    LDA #$00
+    STA menu_paged
+    LDA menu_size
 
     ; tmp = monster_act_str[X]
     TXA

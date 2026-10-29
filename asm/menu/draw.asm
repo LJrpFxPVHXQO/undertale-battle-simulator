@@ -4,7 +4,16 @@ draw_menu:
     LDX menu_size
     DEX
     @loop:
+        ; paged menu: only draw the entries of the page of menu_idx
+        LDA menu_paged
+        BEQ :+
+            TXA
+            EOR menu_idx
+            AND #$FC
+            BNE @skip
+        :
         JSR draw_menu_str
+        @skip:
     to_x_dec @loop, #-1
     RTS
 

@@ -526,6 +526,8 @@ OAM:
 
         menu_idx: .res 1
         menu_size: .res 1
+        ; 1 = the menu is split in pages of 4 entries (item menu)
+        menu_paged: .res 1
         menu_list_lo: .res MAX_MENU
         menu_list_hi: .res MAX_MENU
         menu_list_pos_x: .res MAX_MENU
