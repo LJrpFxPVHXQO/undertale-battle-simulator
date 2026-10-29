@@ -19,10 +19,10 @@ file	id=15,name="asm/macro/other.asm",size=440,mtime=0x66909E5A,mod=0
 file	id=16,name="asm/macro/stack.asm",size=2621,mtime=0x66909E5A,mod=0
 file	id=17,name="asm/memory.asm",size=16652,mtime=0x6AE3C45F,mod=0
 file	id=18,name="asm/dodge/dodge.asm",size=39462,mtime=0x6AE37ED3,mod=0
-file	id=19,name="asm/dodge/spare_img.inc",size=975,mtime=0x6AE38390,mod=0
-file	id=20,name="asm/dodge/kill_img.inc",size=1406,mtime=0x6AE38391,mod=0
-file	id=21,name="asm/dodge/gameover_img.inc",size=1271,mtime=0x6AE38390,mod=0
-file	id=22,name="asm/dodge/landing_logo.inc",size=603,mtime=0x6AE3C04C,mod=0
+file	id=19,name="asm/dodge/spare_img.inc",size=975,mtime=0x6AE3C883,mod=0
+file	id=20,name="asm/dodge/kill_img.inc",size=1406,mtime=0x6AE3C883,mod=0
+file	id=21,name="asm/dodge/gameover_img.inc",size=1271,mtime=0x6AE3C883,mod=0
+file	id=22,name="asm/dodge/landing_logo.inc",size=603,mtime=0x6AE3C883,mod=0
 file	id=23,name="asm/vector/rst.asm",size=1827,mtime=0x66909E5A,mod=0
 file	id=24,name="asm/init/init.asm",size=4209,mtime=0x6AE3C45F,mod=0
 file	id=25,name="asm/init/draw_ui.asm",size=2042,mtime=0x66909E5A,mod=0
@@ -149,7 +149,7 @@ file	id=145,name="asm/data/img_bkg.bin",size=208,mtime=0x6AE3C04B,mod=0
 file	id=146,name="asm/data/img_bkg_cl.bin",size=222,mtime=0x6AE3C04B,mod=0
 file	id=147,name="asm/data/img_spr.bin",size=1024,mtime=0x6AE3C04B,mod=0
 file	id=148,name="asm/hitbox/table.asm",size=3834,mtime=0x6AE3C598,mod=0
-file	id=149,name="Undertale.chr",size=1048576,mtime=0x6AE3C04C,mod=0
+file	id=149,name="Undertale.chr",size=1048576,mtime=0x6AE3C883,mod=0
 line	id=0,file=109,line=1053
 line	id=1,file=109,line=497,span=34971
 line	id=2,file=108,line=1582,span=34496
