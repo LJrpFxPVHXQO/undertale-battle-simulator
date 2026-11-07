@@ -70,6 +70,29 @@ update_player_menu:
     ; select
     LSR
     BCC :+
+        ; Select changes item pages while viewing the inventory
+        LDA menu_curadr
+        CMP #<menu_go_item
+        BNE @music
+        LDA menu_curadr+1
+        CMP #>menu_go_item
+        BNE @music
+        LDA item_page_offset
+        BNE @first_page
+        LDA player_inv+ITEM_PAGE_SIZE
+        BEQ @music
+        LDA #ITEM_PAGE_SIZE
+        BNE @set_page
+        @first_page:
+        LDA #$00
+        @set_page:
+        STA item_page_offset
+        JSR menu_go_item
+        mov menu_idx, #$00
+        JSR update_player_menu_pos
+        JSR draw_update_menu
+        JMP @end
+        @music:
         LDX cur_music
         INC cur_music
         JSR play_music

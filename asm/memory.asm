@@ -498,6 +498,7 @@ OAM:
 
         menu_stack_idx: .res 1
         menu_curadr: .res 2
+        item_page_offset: .res 1
         menu_stack_lo: .res 4
         menu_stack_hi: .res 4
 

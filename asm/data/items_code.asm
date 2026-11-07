@@ -19,8 +19,64 @@ item_code:
         :
         JMP end_item
 
+    ; bandage: restore 10 HP
     item_2:
-    .repeat 254
+        .byte item_3 - item_2 - 1
+        LDA player_stats + PlayerStat::hp
+        CLC
+        ADC #10
+        BCS @max_hp
+        CMP player_stats + PlayerStat::maxhp
+        BCC @store_hp
+        @max_hp:
+            LDA player_stats + PlayerStat::maxhp
+        @store_hp:
+        STA player_stats + PlayerStat::hp
+        ora_adr player_flag, #PLAYER_FLAG_DRAW_HP
+        JMP end_item
+
+    ; monster candy: restore 10 HP
+    item_3:
+        .byte item_4 - item_3 - 1
+        LDA player_stats + PlayerStat::hp
+        CLC
+        ADC #10
+        BCS @max_hp
+        CMP player_stats + PlayerStat::maxhp
+        BCC @store_hp
+        @max_hp:
+            LDA player_stats + PlayerStat::maxhp
+        @store_hp:
+        STA player_stats + PlayerStat::hp
+        ora_adr player_flag, #PLAYER_FLAG_DRAW_HP
+        JMP end_item
+
+    ; spider donut: restore 12 HP
+    item_4:
+        .byte item_5 - item_4 - 1
+        LDA player_stats + PlayerStat::hp
+        CLC
+        ADC #12
+        BCS @max_hp
+        CMP player_stats + PlayerStat::maxhp
+        BCC @store_hp
+        @max_hp:
+            LDA player_stats + PlayerStat::maxhp
+        @store_hp:
+        STA player_stats + PlayerStat::hp
+        ora_adr player_flag, #PLAYER_FLAG_DRAW_HP
+        JMP end_item
+
+    ; cinnamon pie: restore HP to maximum
+    item_5:
+        .byte item_6 - item_5 - 1
+        LDA player_stats + PlayerStat::maxhp
+        STA player_stats + PlayerStat::hp
+        ora_adr player_flag, #PLAYER_FLAG_DRAW_HP
+        JMP end_item
+
+    item_6:
+    .repeat 250
         .byte $03
         JMP end_item
     .endrepeat
